@@ -166,9 +166,13 @@ public class ValidationItemControllerV2 {
         log.info("objectName={}", bindingResult.getObjectName());
         log.info("target={}", bindingResult.getTarget());
 
+        // 타입검증을 위해 앞에서 한번 거름 (안거르면 아래에서 발견한 에러가 하나 더 담김)
+        if (bindingResult.hasErrors()) {
+            // model.addAttribute("errors", bindingResult); -> 생략. 저절로 담김
+            return "validation/v2/addForm";
+        }
 
         //검증 로직
-
         if (!StringUtils.hasText(item.getItemName())) {
             bindingResult.rejectValue("itemName", "required");
         }
